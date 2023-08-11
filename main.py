@@ -1,8 +1,29 @@
-Dict = {'https://www.amazon.in/Philips-109-3-inches-43PUT7791-Smart/dp/B01KCT2QNW/ref=lp_12516994031_1_1?sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D': 25000,
-'https://www.amazon.in/Dell-Vostro-i5-1235U-35-56Cms-Windows/dp/B0BQJ7NMVM/ref=sr_1_14?keywords=dell+laptop&qid=1689010011&s=computers&sprefix=dell+%2Ccomputers%2C269&sr=1-14':50000,
-'https://www.amazon.in/Dell-Inspiron-i5-1335U-Comfortview-Thunderbolt/dp/B0C15CVNFG/ref=sr_1_2_sspa?keywords=dell+laptop&qid=1689010011&s=computers&sprefix=dell+%2Ccomputers%2C269&sr=1-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1':60000,
-'https://www.amazon.in/Samsung-Galaxy-Storage-Additional-Exchange/dp/B09CQ2TPDQ/ref=sr_1_13?keywords=samsung+mobile+phones&qid=1689009623&s=electronics&sr=1-13':45000,
-'https://www.amazon.in/Samsung-Galaxy-Prism-Silver-Storage/dp/B0C7C1DRK5/ref=sr_1_1_sspa?keywords=samsung+mobile+phones&qid=1689009623&s=electronics&sr=1-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1':15000,
-'https://www.amazon.in/dp/B0C5RY45C3?ie=UTF8&viewID=&ref_=s9_acss_bw_cg_INElec12_2b1_w':4000,
+import time
+
+import fetch
+from plyer import notification
+
+Data = {
+    "https://www.amazon.in/Razer-BlackShark-V2-Headset-RZ04-03240100-R3M1/dp/B08WBJHVYV": 5000,
+    "https://www.amazon.in/Alienware-Bluetooth-Frequency-Wired-3-5-AW920H/dp/B0B38WB9HC?th=1": 10000,
+    "https://www.amazon.in/Dell-Inspiron-i5-1335U-35-56Cms-Thunderbolt/dp/B0C1595WPW": 76000,
+    "https://www.amazon.in/HP-i5-1335U-Graphics-Keyboard-15-hr0001TU/dp/B0C3CJX15D": 70000,
+    "https://www.amazon.in/Samsung-inches-Crystal-Ultra-UA55AUE65AKXXL/dp/B0B15GSPQW": 45000,
+    "https://www.amazon.in/LG-inches-Collection-OLEDevo-55LX1QPSA/dp/B0BM4PM1HW": 130000
 }
 
+
+while True:
+    for url in Data.keys():
+        name, price = fetch.fetch_data(url)
+
+        if price == -1:
+            print("Error in fetching " + url)
+            continue
+
+        if price <= Data[url]:
+            notification.notify(title="Price Drop Alert", message="Price of " + name + " has dropped to " + str(price),
+                                timeout=5)
+
+    # Sleep for 5 minutes Before checking price again
+#    time.sleep(300)
