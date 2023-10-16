@@ -4,11 +4,24 @@
 import requests
 from bs4 import BeautifulSoup
 
+# Headers For Amazon Fetching
+
+h = {
+    'authority': 'www.amazon.com',
+    'pragma': 'no-cache',
+    'cache-control': 'no-cache',
+    'dnt': '1',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'sec-fetch-site': 'none',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-dest': 'document',
+    'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
+}
+ 
 
 def fetch_data(url):
-    # Headers For Amazon Fetching
-    h = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:80.0) Gecko/20100101 Firefox/80.0'}
-
     try:
         # Fetching The Amazon URL
         r = requests.get(url, headers=h, timeout=5)
@@ -16,7 +29,7 @@ def fetch_data(url):
         # Converting Fetched Page to HTML document
         soup = BeautifulSoup(r.content, 'html.parser')
 
-        price = soup.find("div", class_="a-section a-spacing-none aok-align-center").find("span", class_="a-price-whole").text.strip()
+        price = soup.find(id="corePriceDisplay_desktop_feature_div").find( class_="a-price-whole").text.strip()
 
         # Remove the comma from the price, and convert to integer
         price = eval(price.replace(",", ""))
